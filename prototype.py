@@ -14,17 +14,24 @@ def showhome_frame():
 def showcollection_frame():
     collection_frame.tkraise()
 
+def showabout_frame():
+    about_frame.tkraise()
+
+def showFAQ_frame():
+    FAQ_frame.tkraise()
 
 
 
+signup_frame = ttk.Frame(root, padding=0)
+login_frame = ttk.Frame(root, padding=0)
+home_frame = ttk.Frame(root, padding=0)
+order_frame = ttk.Frame(root, padding=0)
+collection_frame = ttk.Frame(root, padding=0)
+about_frame = ttk.Frame(root, padding=0)
+FAQ_frame = ttk.Frame(root, padding=0)
 
 
 
-signup_frame = ttk.Frame(root, padding=10)
-login_frame = ttk.Frame(root, padding=10)
-home_frame = ttk.Frame(root, padding=10)
-order_frame = ttk.Frame(root, padding=10)
-collection_frame = ttk.Frame(root, padding=10)
 
 
 signup_frame.grid(row=0,column=0,sticky="nsew")
@@ -32,11 +39,16 @@ login_frame.grid(row=0,column=0, sticky="nsew")
 home_frame.grid(row=0,column=0, sticky="nsew")
 order_frame.grid(row=0,column=0, sticky="nsew")
 collection_frame.grid(row=0,column=0,sticky="nsew")
+about_frame.grid(row=0,column=0,sticky="nsew")
+FAQ_frame.grid(row=0,column=0,sticky="nsew")
+
 
 
 #placing it on the order frame
 hotdrinks_var = tk.StringVar()
 colddrinks_var = tk.StringVar()
+
+
 
 signup_label = ttk.Label(signup_frame, text="Sign up!")
 email_label = ttk.Label(signup_frame,text="email:")
@@ -45,16 +57,18 @@ password_label = ttk.Label(signup_frame,text="Password:")
 signup_label.grid(row=0,column=0)
 email_label.grid(row=1,column=0)
 password_label.grid(row=3,column=0)
-test = ttk.Button(signup_frame)
-test.grid()
+
+
 email_entry = ttk.Entry(signup_frame)
 password_entry = ttk.Entry(signup_frame)
 
 password_entry.grid(row=4,column=0)
 email_entry.grid(row=2,column=0)
 
-signup_button = ttk.Button(signup_frame, text="Sign up!", command = showhome_frame)
-login_button = ttk.Button(signup_frame, text="or Log in", command = showlogin_frame)
+signup_button = ttk.Button(signup_frame, text="Sign up!",
+command = showhome_frame)
+login_button = ttk.Button(signup_frame, text="or Log in",
+command = showlogin_frame)
 
 signup_button.grid(row=5,column=0)
 login_button.grid(row=6,column=0, pady=20)
@@ -77,8 +91,9 @@ Log_button.grid()
 
 #home page
 
-Home_button1 = ttk.Button(home_frame,text="Welcome back!")
-Home_button2 = ttk.Button(home_frame,text="Welcome back!")
+Home_button1 = ttk.Button(home_frame,text="About us",
+command = showabout_frame)
+Home_button2 = ttk.Button(home_frame,text="FAQ", command = showFAQ_frame)
 Home_button3 = ttk.Button(home_frame,text="Welcome back!")
 Home_button4 = ttk.Button(home_frame,text="Welcome back!")
 Home_button5 = ttk.Button(home_frame,text="Welcome back!")
@@ -115,7 +130,7 @@ collection_button = tk.Button(order_frame, text='collection',
                                 height=5,width=30)
 
 delivery_button.pack(padx=100,side=RIGHT)
-collection_button.pack(side=RIGHT)
+collection_button.pack(side=LEFT)
 
 combo_order = ttk.Combobox(order_frame, text="Hot drinks",
                             state="readonly",
@@ -210,10 +225,25 @@ combo_order.pack()
 combo_order.current(0)
 
 
+#about us frame
+back_button1 = ttk.Button (about_frame, text = "< back", command = showhome_frame)
+back_button1.pack(side=LEFT)
+about_label1 = ttk.Label (about_frame,text = "[business name] was founded in [...] by the [...] brothers...")
+about_label1.pack(side=LEFT)
 
 
+#FAQ
 
-
+back_button2 = ttk.Button (FAQ_frame, text = "< back", command = showhome_frame)
+back_button2.grid(column=0,pady=0,padx=0)
+FAQ_label1 = ttk.Label (FAQ_frame, text ='Q: how do I spend my points? ')
+FAQ_label1.grid()
+FAQ_label2 = ttk.Label (FAQ_frame, text ='Q: how do I spend my points? ')
+FAQ_label2.grid()
+FAQ_label3 = ttk.Label (FAQ_frame, text ='Q: how do I spend my points? ')
+FAQ_label3.grid()
+FAQ_label4 = ttk.Label (FAQ_frame, text ='Q: how do I spend my points? ')
+FAQ_label4.grid()
 
 
 
