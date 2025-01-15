@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, Menu, SUNKEN , LEFT , RIGHT , TOP, BOTTOM
+import sqlite3
+
 
 root = tk.Tk()
 root.geometry("1000x700")
@@ -20,6 +22,48 @@ def showabout_frame():
 def showFAQ_frame():
     FAQ_frame.tkraise()
 
+def signup_database():
+     conn = sqlite3.connect('signup_database.db') # creates database
+     c = conn.cursor()  # Create a cursor object to execute SQL queries
+     c.execute('''
+        CREATE TABLE IF NOT EXISTS signup (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL,
+            password TEXT NOT NULL,
+            name TEXT NOT NULL,
+            lastname TEXT NOT NULL
+        )
+    ''')
+def signupdb():
+    name = signup_name1_entry.get()
+    lastname = signup_name2_entry.get()
+    email = login_email_entry.get()
+    password = login_password_entry.get()
+
+    conn = sqlite3.connect('signup_database.db')
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO signup (email, password, name, lastname)
+        VALUES (?, ?, ?, ?)
+        ''', (name, lastname, email, password))  # Insert values into the bookings table
+    conn.commit()  # Save changes to the database
+    print("Added to database")
+    conn.close()
+    showsignupframe()
+
+def login():
+    connection = sqlite3.connect('signup_database.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM signup')
+    check = cursor.fetchall()
+    print(check)
+
+    for i in check:
+        if email_entry and password_entry in check:
+            print('woo')
+
+        else:
+                print('boo')
 
 
 signup_frame = ttk.Frame(root, padding=0)
@@ -50,7 +94,7 @@ colddrinks_var = tk.StringVar()
 
 
 
-signup_label = ttk.Label(signup_frame, text="Sign up!")
+signup_label = ttk.Label(signup_frame, text="Log in")
 email_label = ttk.Label(signup_frame,text="email:")
 password_label = ttk.Label(signup_frame,text="Password:")
 
@@ -65,33 +109,46 @@ password_entry = ttk.Entry(signup_frame)
 password_entry.grid(row=4,column=0)
 email_entry.grid(row=2,column=0)
 
-signup_button = ttk.Button(signup_frame, text="Sign up!",
-command = showhome_frame)
-login_button = ttk.Button(signup_frame, text="or Log in",
+signup_button = ttk.Button(signup_frame, text="Log in",
+command = login)
+login_button = ttk.Button(signup_frame, text="or sign up!",
 command = showlogin_frame)
 
 signup_button.grid(row=5,column=0)
 login_button.grid(row=6,column=0, pady=20)
 
 #Login page,
-login_email_label = ttk.Label(login_frame, text="Email:")
-login_password_label = ttk.Label(login_frame,text="Password:")
-login_email_label.grid(row=0,column=0)
-login_password_label.grid(row=2,column=0)
 
+
+signup_name1 = ttk.Label (login_frame, text= 'first name: ')
+signup_name2 = ttk.Label (login_frame, text= 'Last name: ')
+login_email_label = ttk.Label(login_frame, text="Email: ")
+login_password_label = ttk.Label(login_frame,text="Password: ")
+
+
+signup_name1.grid(row=0, column = 0 )
+signup_name2.grid(row=2, column = 0 )
+login_email_label.grid(row=4,column=0)
+login_password_label.grid(row=6, column=0)
+
+
+signup_name1_entry = ttk.Entry(login_frame)
+signup_name2_entry = ttk.Entry(login_frame)
 login_email_entry = ttk.Entry(login_frame)
 login_password_entry = ttk.Entry(login_frame)
 
+signup_name1_entry.grid(row=5 ,column=0 )
+signup_name2_entry.grid(row=7 , column=0 )
 login_password_entry.grid(row=3,column=0)
 login_email_entry.grid(row=1,column=0)
 
-Log_button = ttk.Button(login_frame, text="Welcome back!",
-                command = showhome_frame)
-Log_button.grid()
+signup1_button = ttk.Button(login_frame, text="Sign up!",
+                command = signupdb)
+signup1_button.grid()
 
 #home page
 
-Home_button1 = ttk.Button(home_frame,text="About us",
+Home_button1 = ttk.Button(home_frame,text="About",
 command = showabout_frame)
 Home_button2 = ttk.Button(home_frame,text="FAQ", command = showFAQ_frame)
 Home_button3 = ttk.Button(home_frame,text="Welcome back!")
@@ -129,46 +186,21 @@ collection_button = tk.Button(order_frame, text='collection',
                                 command= showcollection_frame,
                                 height=5,width=30)
 
-delivery_button.pack(padx=100,side=RIGHT)
-collection_button.pack(side=LEFT)
+hotdrinks_label = ttk.Label(order_frame, text='HOT DRINKS!!!!')
 
-combo_order = ttk.Combobox(order_frame, text="Hot drinks",
-                            state="readonly",
-                            textvariable=hotdrinks_var,
-
-)
-combo_order["values"] = ("Hot Drinks!",
-"coffee                                      £3.50",
-"hot chocolate                         £3.50",
-"americano                              £3.50",
-"latte                                         £3.50",
-"capuchino                              £3.50",
-"pumpkin spice latte              £3.50")
-
-combo_order.pack(side=BOTTOM, padx=200)
-combo_order.current(0)
+latte_button = ttk.Button(order_frame, text='latte')
+cappuccino_button= ttk.Button(order_frame, text='cappuccino')
+americano_button = ttk.Button(order_frame, text='americano')
+flatwhite_button = ttk.Button(order_frame, text='flat white')
 
 
-
-
-combo_order = ttk.Combobox(order_frame, text="Hot drinks",
-                            state="readonly",
-                            textvariable=colddrinks_var,
-
-)
-
-#adding the values
-combo_order["values"] = ("Hot Drinks!",
-"coffee                                      £3.50",
-"hot chocolate                         £3.50",
-"americano                              £3.50",
-"latte                                         £3.50",
-"capuchino                              £3.50",
-"pumpkin spice latte              £3.50")
-
-combo_order.pack(side=BOTTOM)
-combo_order.current(0)
-
+delivery_button.grid()
+collection_button.grid()
+hotdrinks_label.grid(ipadx=100, ipady=30)
+latte_button.grid(ipadx=100, ipady=30)
+cappuccino_button.grid(ipadx=100, ipady=30)
+americano_button.grid(ipadx=100, ipady=30)
+flatwhite_button.grid(ipadx=100, ipady=30)
 
 #duplicating delivery frame for collection
 
@@ -187,42 +219,7 @@ collection_button.pack()
 
 
 
-combo_order = ttk.Combobox(collection_frame, text="Hot drinks",
-                            state="readonly",
-                            textvariable=hotdrinks_var,
 
-)
-combo_order["values"] = ("Hot Drinks!",
-"coffee                                      £3.50",
-"hot chocolate                         £3.50",
-"americano                              £3.50",
-"latte                                         £3.50",
-"capuchino                              £3.50",
-"pumpkin spice latte              £3.50")
-
-combo_order.pack()
-combo_order.current(0)
-
-
-
-
-combo_order = ttk.Combobox(collection_frame, text="Hot drinks",
-                            state="readonly",
-                            textvariable=colddrinks_var,
-
-)
-
-#adding the values
-combo_order["values"] = ("cold Drinks!",
-"coffee                                      £3.50",
-"hot chocolate                         £3.50",
-"americano                              £3.50",
-"latte                                         £3.50",
-"capuchino                              £3.50",
-"pumpkin spice latte              £3.50")
-
-combo_order.pack()
-combo_order.current(0)
 
 
 #about us frame
@@ -247,6 +244,6 @@ FAQ_label4.grid()
 
 
 
-
+signup_database()
 showsignupframe()
 root.mainloop()
