@@ -10,7 +10,14 @@ def showsignupframe():
 def showlogin_frame():
     login_frame.tkraise()
 def showhome_frame():
-    home_frame.tkraise()
+    validation = email_entry.get()
+    if len(validation) >5:
+        print("yipee")
+        home_frame.tkraise()
+    else:
+        print("invalid")
+        showsignupframe()
+        error_login.grid()
 def showcollection_frame():
     collection_frame.tkraise()
 
@@ -63,17 +70,20 @@ login_button.grid(row=6,column=0, pady=20)
 login_email_label = ttk.Label(login_frame, text="Email:")
 login_password_label = ttk.Label(login_frame,text="Password:")
 login_email_label.grid(row=0,column=0)
-login_password_label.grid(row=2,column=0)
+login_password_label.grid(row=3,column=0)
 
 login_email_entry = ttk.Entry(login_frame)
 login_password_entry = ttk.Entry(login_frame)
 
-login_password_entry.grid(row=3,column=0)
+login_password_entry.grid(row=4,column=0)
 login_email_entry.grid(row=1,column=0)
+error_login = ttk.Label(text="error: please enter a valid email " )
+error_login.grid_forget()
 
 Log_button = ttk.Button(login_frame, text="Welcome back!",
                 command = showhome_frame)
 Log_button.grid()
+
 
 #home page
 
@@ -215,6 +225,11 @@ combo_order.current(0)
 
 
 
+
+
+
+showsignupframe()
+root.mainloop()
 
 
 
