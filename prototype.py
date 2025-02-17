@@ -1,6 +1,9 @@
+
 import tkinter as tk
 from tkinter import ttk, Menu, SUNKEN , LEFT , RIGHT , TOP, BOTTOM
 import sqlite3
+
+
 
 
 
@@ -8,6 +11,8 @@ root = tk.Tk()
 root.geometry("1000x700")
 def showorder_frame():
     order_frame.tkraise()
+def showcheckoutframe():
+    checkoutframe.tkraise()
 def showsignupframe():
     signup_frame.tkraise()
 def showlogin_frame():
@@ -31,9 +36,9 @@ def stock_database():
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     hot_choc NUM NOT NULL,
     coffee NUM NOT NULL
-
     )
     ''')
+
 
 
 def admin_database():
@@ -59,6 +64,32 @@ def admin_database():
     conn.commit()  # Save changes to the database
     print("Added to database")
     conn.close()
+
+def admin_login():
+    connection = sqlite3.connect('admins.db')
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM admins')
+    check = cursor.fetchall()
+
+
+    for i in check:
+
+        stored_email = i[1]
+        stored_password = i[2]
+
+
+
+
+    if stored_email == email_entry.get() and stored_password == password_entry.get():
+            showhome_frame()
+            isadmin = True
+            menu_button.grid()
+
+
+    else:
+        isadmin = False
+        login()
+
 
 
 def stockdb():
@@ -100,8 +131,6 @@ def validateentry():
     postcode = Postcode_entry.get()
     if email == '' or password == '' or name == '' or lastname == '' or address == '' or postcode == '':
         print("Please fill all fields")
-    if len(email) <= 3  or len(password) <= 8 or len(name) <= 3 or len(lastname) <= 3:
-        print(f"{email} is invalid")
     else:
         signupdb()
 
@@ -148,6 +177,8 @@ def login():
 
 
 
+
+
 signup_frame = ttk.Frame(root, padding=0)
 login_frame = ttk.Frame(root, padding=0)
 home_frame = ttk.Frame(root, padding=0)
@@ -155,7 +186,7 @@ order_frame = ttk.Frame(root, padding=0)
 collection_frame = ttk.Frame(root, padding=0)
 about_frame = ttk.Frame(root, padding=0)
 faq_frame = ttk.Frame(root, padding=0)
-
+checkoutframe = ttk.Frame(root, padding=0)
 
 
 
@@ -167,7 +198,7 @@ order_frame.grid(row=0,column=0, sticky="nsew")
 collection_frame.grid(row=0,column=0,sticky="nsew")
 about_frame.grid(row=0,column=0,sticky="nsew")
 faq_frame.grid(row=0,column=0,sticky="nsew")
-
+checkoutframe.grid(row=0,column=0,sticky="nsew")
 
 
 #placing it on the order frame
@@ -187,13 +218,13 @@ password_label.grid(row=3,column=0)
 
 
 email_entry = ttk.Entry(signup_frame)
-password_entry = ttk.Entry(signup_frame)
+password_entry = ttk.Entry(signup_frame, show='*')
 
 password_entry.grid(row=4,column=0)
 email_entry.grid(row=2,column=0)
 
 signup_button = ttk.Button(signup_frame, text="Log in",
-command = login)
+command = admin_login)
 login_button = ttk.Button(signup_frame, text="or sign up!",
 command = showlogin_frame)
 
@@ -246,7 +277,8 @@ Home_button2 = ttk.Button(home_frame,text="FAQ", command = showfaq_frame)
 Home_button3 = ttk.Button(home_frame,text="Welcome back!")
 Home_button4 = ttk.Button(home_frame,text="Welcome back!")
 Home_button5 = ttk.Button(home_frame,text="Welcome back!")
-
+menu_button = ttk.Menubutton(home_frame, text='Menu')
+menu_button.grid_forget()
 Home_button1.grid(row=0,column=0, ipadx=10, ipady=10)
 Home_button2.grid(row=0,column=1, ipadx=10, ipady=10)
 Home_button3.grid(row=0,column=2, ipadx=10, ipady=10)
@@ -280,10 +312,10 @@ collection_button = tk.Button(order_frame, text='collection',
 
 hotdrinks_label = ttk.Label(order_frame, text='HOT DRINKS!!!!')
 
-latte_button = ttk.Button(order_frame, text='latte')
-cappuccino_button= ttk.Button(order_frame, text='cappuccino')
-americano_button = ttk.Button(order_frame, text='americano')
-flatwhite_button = ttk.Button(order_frame, text='flat white')
+latte_button = ttk.Button(order_frame, text='latte', command=showcheckoutframe)
+cappuccino_button= ttk.Button(order_frame, text='cappuccino', command=showcheckoutframe)
+americano_button = ttk.Button(order_frame, text='americano', command=showcheckoutframe)
+flatwhite_button = ttk.Button(order_frame, text='flat white', command=showcheckoutframe)
 
 
 delivery_button.grid()
@@ -337,8 +369,11 @@ FAQ_label4.grid()
 
 
 
+checkoutlabel = ttk.Label(checkoutframe, text='Check Out')
+checkoutbutton = ttk.Button(checkoutframe, text='Confirm payment')
 
-
+checkoutlabel.grid()
+checkoutbutton.grid()
 
 
 
