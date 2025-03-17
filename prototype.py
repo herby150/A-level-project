@@ -27,6 +27,8 @@ def showabout_frame():
 
 def showfaq_frame():
     faq_frame.tkraise()
+def showthankyouframe():
+    thankyouframe.tkraise()
 
 def stock_database():
     conn = sqlite3.connect('stock.db')
@@ -187,7 +189,7 @@ collection_frame = ttk.Frame(root, padding=0)
 about_frame = ttk.Frame(root, padding=0)
 faq_frame = ttk.Frame(root, padding=0)
 checkoutframe = ttk.Frame(root, padding=0)
-
+thankyouframe = ttk.Frame(root, padding=0)
 
 
 
@@ -199,7 +201,7 @@ collection_frame.grid(row=0,column=0,sticky="nsew")
 about_frame.grid(row=0,column=0,sticky="nsew")
 faq_frame.grid(row=0,column=0,sticky="nsew")
 checkoutframe.grid(row=0,column=0,sticky="nsew")
-
+thankyouframe.grid(row=0,column=0,sticky="nsew")
 
 #placing it on the order frame
 hotdrinks_var = tk.StringVar()
@@ -370,16 +372,18 @@ FAQ_label4.grid()
 
 
 checkoutlabel = ttk.Label(checkoutframe, text='Check Out')
-checkoutbutton = ttk.Button(checkoutframe, text='Confirm payment')
+checkoutbutton = ttk.Button(checkoutframe, text='Confirm payment', command = showthankyouframe)
+
 
 checkoutlabel.grid()
 checkoutbutton.grid()
 
 
+thankyoulabel = ttk.Label(thankyouframe, text=("Order has been places successfully \n"
+                                                "Your business is appreciated :D"))
 
 
-
-
+thankyoulabel.grid()
 
 
 admin_database()
